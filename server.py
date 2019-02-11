@@ -28,7 +28,8 @@ def calculate_levels(data, chunk,sample_rate):
     # Find amplitude
     power = np.log10(np.abs(fourier))**2
     # Arrange array into 8 rows for the 8 bars on LED matrix
-    power = np.reshape(power,(256,int(chunk/256)))
+    print(np.shape(power))
+    power = np.reshape(power,(256,1))
     matrix= np.int_(np.average(power,axis=1))
     return matrix
 
@@ -94,5 +95,5 @@ def main():
 
 if __name__ == '__main__':
     p = pyaudio.PyAudio()
-    stream = p.open(format=AUDIO_FORMAT, channels=2, rate=SAMPLE_RATE, input=True, frames_per_buffer=CHUNK_SIZE)
+    stream = p.open(format=AUDIO_FORMAT, channels=1, rate=SAMPLE_RATE, input=True, frames_per_buffer=CHUNK_SIZE)
     main()
