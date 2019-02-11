@@ -13,7 +13,7 @@ except ImportError:
 HOST = os.getenv('HOST', 'babymic.local')
 PORT = int(os.getenv('PORT', 8080))
 
-URL = f'ws://{HOST}:{PORT}/ws'
+URL = "ws://{}:{}/ws".format(HOST, PORT)
 
 
 async def main():
