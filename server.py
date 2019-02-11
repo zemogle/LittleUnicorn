@@ -28,7 +28,6 @@ def calculate_levels(data, chunk,sample_rate):
     # Find amplitude
     power = np.log10(np.abs(fourier))**2
     # Arrange array into 8 rows for the 8 bars on LED matrix
-    print(np.shape(power))
     power = np.reshape(power,(256,1))
     matrix= np.int_(np.average(power,axis=1))
     return matrix

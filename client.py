@@ -10,7 +10,7 @@ except ImportError:
     from unicorn_hat_sim import unicornhathd
 
 
-HOST = os.getenv('HOST', '0.0.0.0')
+HOST = os.getenv('HOST', 'babymic.local')
 PORT = int(os.getenv('PORT', 8080))
 
 URL = f'ws://{HOST}:{PORT}/ws'
