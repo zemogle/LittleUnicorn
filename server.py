@@ -59,11 +59,6 @@ def display(stream):
         rgb.append(colourise(val*10.))
     return json.dumps(rgb)
 
-
-async def testhandle(request):
-    return web.Response(text='Test handle')
-
-
 async def websocket_handler(request):
     print('Websocket connection starting')
     ws = web.WebSocketResponse()
@@ -88,7 +83,6 @@ def main():
 
     loop = asyncio.get_event_loop()
     app = web.Application(loop=loop)
-    app.router.add_route('GET', '/', testhandle)
     app.router.add_route('GET', '/ws', websocket_handler)
     web.run_app(app, host=HOST, port=PORT)
 
