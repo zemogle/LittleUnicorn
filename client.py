@@ -2,6 +2,7 @@ import asyncio
 import os
 import json
 import aiohttp
+import sys
 
 try:
     import unicornhathd
@@ -10,8 +11,11 @@ except ImportError:
     from unicorn_hat_sim import unicornhathd
 
 
-HOST = os.getenv('HOST', 'babymic.local')
-PORT = int(os.getenv('PORT', 8080))
+HOST = '0.0.0.0'
+PORT = 8080
+
+if len(sys.argv) > 0:
+    HOST = str(sys.argv[1])
 
 URL = "ws://{}:{}/ws".format(HOST, PORT)
 
