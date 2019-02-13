@@ -12,7 +12,7 @@ HOST = os.getenv('HOST', '0.0.0.0')
 PORT = int(os.getenv('PORT', 8080))
 
 SAMPLE_RATE = 44100
-CHUNK_SIZE = 512
+CHUNK_SIZE = 4096
 AUDIO_FORMAT = pyaudio.paInt16
 
 FORMAT = np.int16
@@ -22,6 +22,7 @@ def calculate_levels(data, chunk,sample_rate):
     fourier=np.fft.rfft(data)
     # Remove last element in array to make it the same size as chunk
     fourier=np.delete(fourier,len(fourier)-1)
+    fourier = fourier[0:256]
     # Find amplitude
     power = np.log10(np.abs(fourier))**2
     # Arrange array into 256 rows for the Unicorn HAT HD
