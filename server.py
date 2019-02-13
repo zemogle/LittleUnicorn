@@ -18,16 +18,13 @@ AUDIO_FORMAT = pyaudio.paInt16
 FORMAT = np.int16
 
 def calculate_levels(data, chunk,sample_rate):
-    # Convert raw data to numpy array
-    # data = unpack("%dh"%(len(data)/2),data)
-    # data = np.array(data, dtype='h')
     # Apply FFT - real data so rfft used
     fourier=np.fft.rfft(data)
     # Remove last element in array to make it the same size as chunk
     fourier=np.delete(fourier,len(fourier)-1)
     # Find amplitude
     power = np.log10(np.abs(fourier))**2
-    # Arrange array into 8 rows for the 8 bars on LED matrix
+    # Arrange array into 256 rows for the Unicorn HAT HD
     power = np.reshape(power,(256,1))
     matrix= np.int_(np.average(power,axis=1))
     return matrix
