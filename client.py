@@ -37,7 +37,7 @@ def colourise(val):
     elif val >=150 and val <= 200:
         colour = (60,179,113)
     elif val >=100 and val < 150:
-        colour = (30,144,255)
+        colour = (0,0,128)
     elif val < 100:
         colour = (0,0,0)
     return colour
