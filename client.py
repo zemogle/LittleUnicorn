@@ -19,6 +19,29 @@ if len(sys.argv) > 0:
 
 URL = "ws://{}:{}/ws".format(HOST, PORT)
 
+def display(levels):
+    rgb = []
+    for i in range(0,256):
+        val = levels[i]
+        rgb.append(colourise(val*10.))
+    return rgb
+
+def colourise(val):
+    # loud is red, quiessent is blue, green is in the middle
+    if val > 255:
+        val = 255
+
+    if val > 200:
+        # Red - danger!
+        colour = (178,34,34)
+    elif val >=150 and val <= 200:
+        colour = (60,179,113)
+    elif val >=100 and val < 150:
+        colour = (30,144,255)
+    elif val < 100:
+        colour = (0,0,0)
+    return colour
+
 
 async def main():
     session = aiohttp.ClientSession()
@@ -29,7 +52,8 @@ async def main():
             async for msg in ws:
                 # await prompt_and_send(ws)
                 await ws.send_str('')
-                for i, colour in enumerate(json.loads(msg.data)):
+                colours = display(json.loads(msg.data))
+                for i, colour in enumerate(colours):
                     x,y = divmod(i,16)
                     unicornhathd.set_pixel(x, y, colour[0], colour[1], colour[2])
                 try:

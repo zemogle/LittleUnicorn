@@ -27,34 +27,14 @@ def calculate_levels(data, chunk,sample_rate):
     power = np.log10(np.abs(fourier))**2
     # Arrange array into 256 rows for the Unicorn HAT HD
     power = np.reshape(power,(256,1))
-    matrix= np.int_(np.average(power,axis=1))
-    return matrix
+    matrix= np.average(power,axis=1)
+    return list(matrix.astype(int).astype(float))
 
-def colourise(val):
-    # loud is red, quiessent is blue, green is in the middle
-    if val > 255:
-        val = 255
-
-    if val > 190:
-        colour = (val, 0, 0)
-    elif val >=85 and val <= 190:
-        colour = (0, val, 0)
-    elif val < 0:
-        colour = (0,0,0)
-    else:
-        colour = (0, 0, val)
-    return colour
-
-
-def display(stream):
-    rgb = []
+def audio_analyse(stream):
     signal = np.frombuffer(stream.read(CHUNK_SIZE, exception_on_overflow = False), FORMAT)
 
     levels = calculate_levels(signal, CHUNK_SIZE, SAMPLE_RATE)
-    for i in range(0,256):
-        val = levels[i]
-        rgb.append(colourise(val*10.))
-    return json.dumps(rgb)
+    return json.dumps(levels)
 
 async def websocket_handler(request):
     print('Websocket connection starting')
@@ -62,15 +42,15 @@ async def websocket_handler(request):
     await ws.prepare(request)
     print('Websocket connection ready')
 
-    rgb = display(stream)
+    # rgb = audio_analyse(stream)
     async for msg in ws:
         print(msg)
-        rgb = display(stream)
+        levels = audio_analyse(stream)
         if msg.type == WSMsgType.TEXT:
             if msg.data == 'close':
                 await ws.close()
             else:
-                await ws.send_str(rgb)
+                await ws.send_str(levels)
 
     print('Websocket connection closed')
     return ws
