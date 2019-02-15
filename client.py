@@ -28,15 +28,12 @@ def display(levels):
 
 def colourise(val):
     # loud is red, quiessent is blue, green is in the middle
-    if val > 255:
-        val = 255
-
     if val > 220:
         # Red - danger!
         colour = (226,88,34)
     elif val >=200 and val <= 220:
         colour = (226,136,34)
-    elif val >=200 and val < 170:
+    elif val >=170 and val < 200:
         colour = (226,184,34)
     elif val < 170:
         colour = (0,0,0)
