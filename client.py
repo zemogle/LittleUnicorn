@@ -31,14 +31,14 @@ def colourise(val):
     if val > 255:
         val = 255
 
-    if val > 200:
+    if val > 170:
         # Red - danger!
-        colour = (178,34,34)
-    elif val >=150 and val <= 200:
-        colour = (60,179,113)
-    elif val >=100 and val < 150:
-        colour = (0,0,128)
-    elif val < 100:
+        colour = (226,88,34)
+    elif val >=150 and val <= 170:
+        colour = (226,136,34)
+    elif val >=120 and val < 150:
+        colour = (226,184,34)
+    elif val < 120:
         colour = (0,0,0)
     return colour
 
