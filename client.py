@@ -31,14 +31,14 @@ def colourise(val):
     if val > 255:
         val = 255
 
-    if val > 170:
+    if val > 220:
         # Red - danger!
         colour = (226,88,34)
-    elif val >=150 and val <= 170:
+    elif val >=200 and val <= 220:
         colour = (226,136,34)
-    elif val >=120 and val < 150:
+    elif val >=200 and val < 170:
         colour = (226,184,34)
-    elif val < 120:
+    elif val < 170:
         colour = (0,0,0)
     return colour
 
@@ -56,7 +56,7 @@ async def main():
                 for i, colour in enumerate(colours):
                     x,y = divmod(i,16)
                     unicornhathd.set_pixel(x, y, colour[0], colour[1], colour[2])
-                    unicornhathd.rotation(270.0)
+                    unicornhathd.rotation(90.0)
                 try:
                     unicornhathd.show()
                 except Exception as e:
