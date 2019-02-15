@@ -56,6 +56,7 @@ async def main():
                 for i, colour in enumerate(colours):
                     x,y = divmod(i,16)
                     unicornhathd.set_pixel(x, y, colour[0], colour[1], colour[2])
+                    unicornhathd.rotation(270.0)
                 try:
                     unicornhathd.show()
                 except Exception as e:
