@@ -36,6 +36,9 @@ def audio_analyse(stream):
     levels = calculate_levels(signal, CHUNK_SIZE, SAMPLE_RATE)
     return json.dumps(levels)
 
+async def connection_test(request):
+    return web.Response(text='Connection test')
+
 async def websocket_handler(request):
     print('Websocket connection starting')
     ws = web.WebSocketResponse()
@@ -59,6 +62,7 @@ def main():
 
     loop = asyncio.get_event_loop()
     app = web.Application(loop=loop)
+    app.router.add_route('GET', '/', connection_test)
     app.router.add_route('GET', '/ws', websocket_handler)
     web.run_app(app, host=HOST, port=PORT)
 
