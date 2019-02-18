@@ -1,8 +1,15 @@
+from future.standard_library import install_aliases
+install_aliases()
+
 import asyncio
 import os
 import json
 import aiohttp
 import sys
+from urllib.error import URLError
+from urllib.request import urlopen
+import time
+from random import randint
 
 try:
     import unicornhathd
@@ -14,10 +21,24 @@ except ImportError:
 HOST = '0.0.0.0'
 PORT = 8080
 
+wifi_rgb = [
+    [255,99,71], [255,215,0], [50,205,50], [0,255,255], [30,144,255], [220,20,60]
+]
+
 if len(sys.argv) > 0:
     HOST = str(sys.argv[1])
 
 URL = "ws://{}:{}/ws".format(HOST, PORT)
+TEST_URL = "http://{}:{}".format(HOST, PORT)
+
+def wait_for_internet_connection():
+    while True:
+        try:
+            # This is the IP of Google.com
+            response = urlopen(TEST_URL,timeout=1)
+            return
+        except URLError:
+            awaiting_connection()
 
 def display(levels):
     rgb = []
@@ -62,17 +83,22 @@ async def main():
                 if msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
                     break
 
-
-async def prompt_and_send(ws):
-    new_msg_to_send = input('Type a message to send to the server: ')
-    if new_msg_to_send == 'exit':
-        print('Exiting!')
-        raise SystemExit(0)
-    await ws.send_str(new_msg_to_send)
-
+def awaiting_connection():
+    x = 7
+    rgb = wifi_rgb[randint(0,5)]
+    for current in range(0,16):
+        for y in range(0,16):
+            if y == current:
+                unicornhathd.set_pixel(x, y, rgb[0], rgb[1], rgb[2])
+            else:
+                unicornhathd.set_pixel(x, y, 0,0,0)
+        unicornhathd.show()
+        time.sleep(0.1)
+    return
 
 if __name__ == '__main__':
 
+    wait_for_internet_connection()
     try:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(main())

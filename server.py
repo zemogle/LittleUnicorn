@@ -44,7 +44,6 @@ async def websocket_handler(request):
 
     # rgb = audio_analyse(stream)
     async for msg in ws:
-        print(msg)
         levels = audio_analyse(stream)
         if msg.type == WSMsgType.TEXT:
             if msg.data == 'close':
