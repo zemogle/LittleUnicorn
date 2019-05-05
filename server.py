@@ -22,11 +22,11 @@ def calculate_levels(data, chunk,sample_rate):
     fourier=np.fft.rfft(data)
     # Remove last element in array to make it the same size as chunk
     fourier=np.delete(fourier,len(fourier)-1)
-    fourier = fourier[0:256]
+    #fourier = fourier[0:256]
     # Find amplitude
     power = np.log10(np.abs(fourier))**2
     # Arrange array into 256 rows for the Unicorn HAT HD
-    power = np.reshape(power,(256,1))
+    power = np.reshape(power,(256,8))
     matrix= np.average(power,axis=1)
     return list(matrix.astype(int).astype(float))
 
