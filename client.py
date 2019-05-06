@@ -51,12 +51,12 @@ def colourise(val):
     # loud is red, quiessent is blue, green is in the middle
     if val > 220:
         # Red - danger!
-        colour = (228,43,3)
-    elif val >=200 and val <= 220:
-        colour = (255,187,351)
-    elif val >=120 and val < 200:
+        colour = (199,0,57)
+    elif val >=180 and val <= 220:
+        colour = (255,87,51)
+    elif val >=150 and val < 200:
         colour = (255,195,0)
-    elif val < 120:
+    elif val < 150:
         colour = (0,0,0)
     return colour
 
@@ -78,7 +78,8 @@ async def main():
                 try:
                     unicornhathd.show()
                 except Exception as e:
-                    print(msg.data)
+                    # print(msg.data)
+                    pass
 
                 if msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
                     break
