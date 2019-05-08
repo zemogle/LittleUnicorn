@@ -50,7 +50,8 @@ def display(levels):
     for i in range(1,256):
         val = levels[i]
         # rgb.append(()
-        rgb.append(colourise(val*10., red))
+        # rgb.append(colourise(val**2, red))
+        rgb.append(val_to_hsv(val**2, red))
     return rgb
 
 def colourise(val, red):
@@ -66,6 +67,16 @@ def colourise(val, red):
         colour = (0,0,val)
     return colour
 
+def val_to_hsv(val, red):
+    val = val/255
+    if val > 1:
+        hsv = (1,1,1)
+    elif val < 0:
+        hsv = (0,0,0)
+    else:
+        hsv = (val, 0.5, val)
+    return hsv
+
 
 async def main():
     session = aiohttp.ClientSession()
@@ -79,7 +90,7 @@ async def main():
                 colours = display(json.loads(msg.data))
                 for i, colour in enumerate(colours):
                     x,y = divmod(i,16)
-                    unicornhathd.set_pixel(x, y, colour[0], colour[1], colour[2])
+                    unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
                     unicornhathd.rotation(90.0)
                 try:
                     unicornhathd.show()
