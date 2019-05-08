@@ -34,30 +34,36 @@ TEST_URL = "http://{}:{}".format(HOST, PORT)
 def wait_for_internet_connection():
     while True:
         try:
-            # This is the IP of Google.com
+            print("trying {}".format(TEST_URL))
             response = urlopen(TEST_URL,timeout=1)
-            return
+            break
         except URLError:
             awaiting_connection()
+    return
 
 def display(levels):
     rgb = []
-    for i in range(0,256):
+    if max(levels[1:])>22:
+        red = True
+    else:
+        red = False
+    for i in range(1,256):
         val = levels[i]
-        rgb.append(colourise(val*10.))
+        # rgb.append(()
+        rgb.append(colourise(val*10., red))
     return rgb
 
-def colourise(val):
+def colourise(val, red):
     # loud is red, quiessent is blue, green is in the middle
-    if val > 220:
+    if val > 255:
         # Red - danger!
-        colour = (199,0,57)
-    elif val >=180 and val <= 220:
-        colour = (255,87,51)
-    elif val >=150 and val < 200:
-        colour = (255,195,0)
-    elif val < 150:
-        colour = (0,0,0)
+        val = 255
+    elif val < 0:
+        val = 0
+    if red:
+        colour = (val, 0, 0)
+    else:
+        colour = (0,0,val)
     return colour
 
 
