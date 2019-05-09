@@ -70,11 +70,15 @@ def colourise(val, red):
 def val_to_hsv(val, red):
     val = val/255
     if val > 1:
-        hsv = (1,1,1)
+        val = 1
+        hsv = (1,1,0.5)
     elif val < 0:
+        val = 0
         hsv = (0,0,0)
     else:
         hsv = (val, 0.5, val)
+    if red:
+        hsv = (1,val,0.6)
     return hsv
 
 
