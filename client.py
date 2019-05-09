@@ -75,6 +75,8 @@ def val_to_hsv(val, red):
     elif val < 0:
         val = 0
         hsv = (0,0,0)
+    elif val < 0.3:
+        hsv = (0,0,0)
     else:
         hsv = (val, 0.2, 0.2)
     if red:
