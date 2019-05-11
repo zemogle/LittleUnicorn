@@ -6,6 +6,7 @@ import asyncio
 from aiohttp import web, WSMsgType
 import json
 import os
+import struct
 
 
 HOST = os.getenv('HOST', '0.0.0.0')
@@ -30,11 +31,21 @@ def calculate_levels(data, chunk,sample_rate):
     matrix= np.average(power,axis=1)
     return list(matrix.astype(int).astype(float))
 
+def calculate_spect(data, chunk):
+    data_int = struct.unpack(str(2 * chunk) + 'B', data)
+    max_v = np.max(data_int)
+    yf = np.fft.rfft(data_int)
+    spect = np.abs(yf[0:256]) / (128 * chunk)
+    hist = np.histogram(spect, 256)
+    return list(spect.astype(float)), max_v.astype(float)
+    # return list(hist[0].astype(float)), max_v.astype(float)
+
 def audio_analyse(stream):
     signal = np.frombuffer(stream.read(CHUNK_SIZE, exception_on_overflow = False), FORMAT)
 
-    levels = calculate_levels(signal, CHUNK_SIZE, SAMPLE_RATE)
-    return json.dumps(levels)
+    # levels = calculate_levels(signal, CHUNK_SIZE, SAMPLE_RATE)
+    levels, max_v = calculate_spect(signal, CHUNK_SIZE)
+    return json.dumps({'data':levels,'max':max_v})
 
 async def connection_test(request):
     return web.Response(text='Connection test')

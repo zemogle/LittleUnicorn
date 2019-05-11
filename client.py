@@ -41,9 +41,10 @@ def wait_for_internet_connection():
             awaiting_connection()
     return
 
-def display(levels):
+def display(sound):
+    levels = sound['data']
     rgb = []
-    if max(levels[1:])>22:
+    if sound['max']>200:
         red = True
     else:
         red = False
@@ -51,14 +52,14 @@ def display(levels):
         val = levels[i]
         # rgb.append(()
         # rgb.append(colourise(val**2, red))
-        rgb.append(val_to_hsv(val**2, red))
+        rgb.append(val_to_hsv(2*val, red))
     return rgb
 
 def colourise(val, red):
     # loud is red, quiessent is blue, green is in the middle
-    if val > 255:
+    if val > 1:
         # Red - danger!
-        val = 255
+        val = 1
     elif val < 0:
         val = 0
     if red:
@@ -68,19 +69,17 @@ def colourise(val, red):
     return colour
 
 def val_to_hsv(val, red):
-    val = val/255
+    # val = val/255
     if val > 1:
         val = 1
         hsv = (1,1,0.5)
     elif val < 0:
         val = 0
         hsv = (0,0,0)
-    elif val < 0.3:
-        hsv = (0,0,0)
     else:
-        hsv = (val, 0.2, 0.2)
+        hsv = (val, 1, val)
     if red:
-        hsv = (1,val,0.6)
+        hsv = (val,1 ,0.6)
     return hsv
 
 
@@ -93,7 +92,8 @@ async def main():
             async for msg in ws:
                 # await prompt_and_send(ws)
                 await ws.send_str('')
-                colours = display(json.loads(msg.data))
+                sound = json.loads(msg.data)
+                colours = display(sound)
                 for i, colour in enumerate(colours):
                     x,y = divmod(i,16)
                     unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
