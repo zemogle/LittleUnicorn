@@ -44,30 +44,27 @@ def wait_for_internet_connection():
 def display(sound):
     levels = sound['data']
     rgb = []
-    if sound['max']>2.1:
-        red = True
+    if sound['max']>2.2:
+        cry = True
     else:
-        red = False
+        cry = False
     for i in range(1,256):
         val = levels[i]
-        rgb.append(val_to_hsv(2*val, red))
+        rgb.append(val_to_hsv(2*val, cry))
     return rgb
 
-def colourise(val, red):
-    # loud is red, quiessent is blue, green is in the middle
+def colourise(val, cry):
     if val > 1:
-        # Red - danger!
         val = 1
     elif val < 0:
         val = 0
-    if red:
+    if cry:
         colour = (val, 0, 0)
     else:
         colour = (0,0,val)
     return colour
 
 def val_to_hsv(val, red):
-    # val = val/255
     if val > 1:
         val = 1
         hsv = (1,1,0.5)
