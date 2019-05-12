@@ -44,14 +44,12 @@ def wait_for_internet_connection():
 def display(sound):
     levels = sound['data']
     rgb = []
-    if sound['max']>200:
+    if sound['max']>2.1:
         red = True
     else:
         red = False
     for i in range(1,256):
         val = levels[i]
-        # rgb.append(()
-        # rgb.append(colourise(val**2, red))
         rgb.append(val_to_hsv(2*val, red))
     return rgb
 
