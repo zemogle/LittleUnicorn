@@ -44,7 +44,7 @@ def wait_for_internet_connection():
 def display(sound):
     levels = sound['data']
     rgb = []
-    if sound['max']>2.2:
+    if sound['max']>2.1:
         cry = True
     else:
         cry = False
