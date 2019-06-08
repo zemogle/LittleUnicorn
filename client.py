@@ -10,6 +10,7 @@ from urllib.error import URLError
 from urllib.request import urlopen
 import time
 from random import randint
+import numpy as np
 
 try:
     import unicornhathd
@@ -24,6 +25,9 @@ PORT = 8080
 wifi_rgb = [
     [255,99,71], [255,215,0], [50,205,50], [0,255,255], [30,144,255], [220,20,60]
 ]
+
+x = np.arange(1,257)
+y = np.log(x)
 
 if len(sys.argv) > 0:
     HOST = str(sys.argv[1])
@@ -42,9 +46,9 @@ def wait_for_internet_connection():
     return
 
 def display(sound):
-    levels = sound['data']
+    levels = np.abs((sound['data']*y)*2.5) #sound['data']
     rgb = []
-    if sound['max']>2.1:
+    if sound['max']>2.12:
         cry = True
     else:
         cry = False
