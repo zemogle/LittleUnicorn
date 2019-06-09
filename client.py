@@ -68,7 +68,7 @@ def colourise(val, cry):
         colour = (0,0,val)
     return colour
 
-def val_to_hsv(val, red):
+def val_to_hsv(val, cry):
     if val > 1:
         val = 1
         hsv = (1,1,0.5)
@@ -76,8 +76,8 @@ def val_to_hsv(val, red):
         val = 0
         hsv = (0,0,0)
     else:
-        hsv = (val, 1, val)
-    if red:
+        hsv = (val, 0.2, val/2)
+    if cry:
         hsv = (val,1 ,0.6)
     return hsv
 
