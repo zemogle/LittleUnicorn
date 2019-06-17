@@ -26,6 +26,16 @@ wifi_rgb = [
     [255,99,71], [255,215,0], [50,205,50], [0,255,255], [30,144,255], [220,20,60]
 ]
 
+start_up_pixels   =   [
+        [0,0,1,0,0,0,0,0,1,0,0],
+        [0,0,0,1,0,0,0,1,0,0,0],
+        [0,0,1,1,1,1,1,1,1,0,0],
+        [0,1,1,0,1,1,1,0,1,1,0],
+        [1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,1,1,1,1,1,1,1,0,1],
+        [1,0,1,0,0,0,0,0,1,0,1],
+        [0,0,0,1,1,0,1,1,0,0,0]
+]
 x = np.arange(1,257)
 y = np.log(x)
 
@@ -46,9 +56,9 @@ def wait_for_internet_connection():
     return
 
 def display(sound):
-    levels = np.abs((sound['data']*y)*2.5) #sound['data']
+    levels = np.abs((sound['data']*y)/2) #sound['data']
     rgb = []
-    if sound['max']>2.12:
+    if np.mean(levels) < 0.04:
         cry = True
     else:
         cry = False
@@ -76,7 +86,7 @@ def val_to_hsv(val, cry):
         val = 0
         hsv = (0,0,0)
     else:
-        hsv = (val, 0.2, val/2)
+        hsv = (val, 1, val)
     if cry:
         hsv = (val,1 ,0.6)
     return hsv
@@ -109,14 +119,15 @@ async def main():
 def awaiting_connection():
     x = 7
     rgb = wifi_rgb[randint(0,5)]
-    for current in range(0,16):
-        for y in range(0,16):
-            if y == current:
+    for row in range(0,len(pixels)):
+        for col in range(0,len(pixels[row])):
+            pixel=pixels[row][col]
+            if pixel>0:
                 unicornhathd.set_pixel(x, y, rgb[0], rgb[1], rgb[2])
             else:
                 unicornhathd.set_pixel(x, y, 0,0,0)
-        unicornhathd.show()
-        time.sleep(0.1)
+    unicornhathd.show()
+    time.sleep(0.1)
     return
 
 if __name__ == '__main__':
