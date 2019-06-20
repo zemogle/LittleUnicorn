@@ -34,7 +34,7 @@ def calculate_levels(data, chunk,sample_rate):
 def calculate_spect(data, chunk):
     data_int = struct.unpack(str(2 * chunk) + 'B', data)
     yf = np.fft.rfft(data_int)
-    spect = np.abs(yf[0:256]) / (128 * chunk)
+    spect = np.abs(yf[256:512]) / (128 * chunk)
     max_v = np.max(spect)
     # hist = np.histogram(spect, 256)
     return list(spect.astype(float)), max_v.astype(float)
