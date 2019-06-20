@@ -58,7 +58,7 @@ def wait_for_internet_connection():
 def display(sound):
     levels = np.abs((sound['data']*y)) #sound['data']
     rgb = []
-    if np.mean(levels) < 0.02:
+    if np.mean(levels) > 0.05:
         cry = True
     else:
         cry = False
