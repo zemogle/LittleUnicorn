@@ -26,7 +26,7 @@ wifi_rgb = [
     [255,99,71], [255,215,0], [50,205,50], [0,255,255], [30,144,255], [220,20,60]
 ]
 
-start_up_pixels   =   [
+pixels   =   [
         [0,0,1,0,0,0,0,0,1,0,0],
         [0,0,0,1,0,0,0,1,0,0,0],
         [0,0,1,1,1,1,1,1,1,0,0],
@@ -58,13 +58,14 @@ def wait_for_internet_connection():
 def display(sound):
     levels = np.abs((sound['data']*y)) #sound['data']
     rgb = []
-    if np.mean(levels) > 0.03:
+    print(np.mean(levels))
+    if np.mean(levels) < 0.02:
         cry = True
     else:
         cry = False
     for i in range(1,256):
         val = levels[i]
-        rgb.append(val_to_hsv(2*val, cry))
+        rgb.append(val_to_hsv(10*val, cry))
     return rgb
 
 def colourise(val, cry):
@@ -123,9 +124,9 @@ def awaiting_connection():
         for col in range(0,len(pixels[row])):
             pixel=pixels[row][col]
             if pixel>0:
-                unicornhathd.set_pixel(x, y, rgb[0], rgb[1], rgb[2])
+                unicornhathd.set_pixel(col, row, rgb[0], rgb[1], rgb[2])
             else:
-                unicornhathd.set_pixel(x, y, 0,0,0)
+                unicornhathd.set_pixel(col, row, 0,0,0)
     unicornhathd.show()
     time.sleep(0.1)
     return
