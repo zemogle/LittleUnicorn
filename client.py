@@ -86,9 +86,9 @@ def val_to_hsv(val, cry):
         val = 0
         hsv = (0,0,0)
     else:
-        hsv = (val, 1, val)
+        hsv = (val, 1, val/3)
     if cry:
-        hsv = (val,1 ,0.6)
+        hsv = (val,val ,0.6)
     return hsv
 
 
