@@ -26,10 +26,6 @@ except ImportError:
 HOST = '0.0.0.0'
 PORT = 8080
 
-wifi_rgb = [
-    [255,99,71], [255,215,0], [50,205,50], [0,255,255], [30,144,255], [220,20,60]
-]
-
 PIXELS   =   [
         [0,0,1,0,0,0,0,0,1,0,0],
         [0,0,0,1,0,0,0,1,0,0,0],
@@ -40,11 +36,79 @@ PIXELS   =   [
         [1,0,1,0,0,0,0,0,1,0,1],
         [0,0,0,1,1,0,1,1,0,0,0]
 ]
+
+GHOST_PIXELS   =   [[
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+        [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,],
+        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,],
+        [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,],
+        [0,0,1,2,2,1,1,1,1,2,2,1,1,1,0,0,],
+        [0,0,2,2,2,2,1,1,2,2,2,2,1,1,0,0,],
+        [0,0,3,3,2,2,1,1,3,3,2,2,1,1,0,0,],
+        [0,1,3,3,2,2,1,1,3,3,2,2,1,1,1,0,],
+        [0,1,1,2,2,1,1,1,1,2,2,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,],
+        [0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+],
+[        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+        [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,],
+        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,],
+        [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,],
+        [0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 0, 0],
+        [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 0, 0],
+        [0, 0, 1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 0, 0],
+        [0, 1, 1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 1, 0],
+        [0, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,],
+        [0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
+        ]
+    ]
+
+CRY_GHOST_PIXELS   =   [[
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+        [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,],
+        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,],
+        [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,],
+        [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,],
+        [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,],
+        [0,0,1,1,1,2,2,1,1,2,2,1,1,1,0,0,],
+        [0,1,1,1,1,2,2,1,1,2,2,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,2,2,1,1,2,2,1,1,2,2,1,1,0,],
+        [0,1,2,1,1,2,2,1,1,2,2,1,1,2,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
+        [0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,],
+        [0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
+]]
+
+GHOST_COLOUR = {'normal' :{
+                    1: (255,128,0), 2:(255,255,255),3:(0,102,204)
+                    },
+                'cry': {
+                    1: (0,102,204), 2:(255,255,255)
+                    }
+                }
 x = np.arange(1,257)
-y = np.log(x)
+calib = np.log(x)
 
 if len(sys.argv) > 0:
     HOST = str(sys.argv[1])
+    try:
+        DISP = str(sys.argv[2])
+    except IndexError:
+        DISP = "raw"
 
 URL = "ws://{}:{}/ws".format(HOST, PORT)
 TEST_URL = "http://{}:{}".format(HOST, PORT)
@@ -60,7 +124,7 @@ def wait_for_internet_connection():
     return
 
 def display(sound, lastcry):
-    levels = np.abs((sound['data']*y)) #sound['data']
+    levels = np.abs((sound['data']*calib)) #sound['data']
     rgb = []
     if np.mean(levels) > 0.05:
         cry = True
@@ -71,6 +135,18 @@ def display(sound, lastcry):
         val = levels[i]
         rgb.append(val_to_hsv(10*val, cry))
     return rgb
+
+def histogram_display(sound):
+    max_val = 16
+    scale = 5
+    x,bins = np.histogram(np.abs((sound['data']*calib)),16,range=(0.,.1))
+    x_arr = []
+    for i in x:
+        xlen = int(i/scale)
+        if xlen > 16:
+            xlen = 16
+        x_arr.append(xlen)
+    return x_arr
 
 def colourise(val, cry):
     if val > 1:
@@ -117,27 +193,45 @@ async def main():
                 # await prompt_and_send(ws)
                 await ws.send_str('')
                 sound = json.loads(msg.data)
-                colours = display(sound, lastcry)
-                for i, colour in enumerate(colours):
-                    x,y = divmod(i,16)
-                    unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
-                    unicornhathd.rotation(90.0)
-                try:
-                    unicornhathd.show()
-                except Exception as e:
-                    # print(msg.data)
-                    pass
 
+                unicorn_display(sound, lastcry)
                 if msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
                     break
 
+def unicorn_display(sound, lastcry):
+    if DISP == 'h':
+        unicornhathd.clear()
+        y_len = histogram_display(sound)
+
+        for x in range(0,16):
+            y_val = y_len[x]
+            for y in range(0,16):
+                if y < y_val:
+                    amp = y_val/np.max(y_len)
+                    unicornhathd.set_pixel_hsv(x, y, amp,0.7,0.5)
+                else:
+                    unicornhathd.set_pixel_hsv(x, y, 0,0,0)
+    else:
+        colours = display(sound, lastcry)
+        for i, colour in enumerate(colours):
+            x,y = divmod(i,16)
+            unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
+    try:
+        unicornhathd.rotation(180.0)
+        unicornhathd.show()
+    except Exception as e:
+        # print(msg.data)
+        pass
+    return
+
 def awaiting_connection():
-    x = 7
-    rgb = wifi_rgb[randint(0,5)]
-    for row in range(0,len(PIXELS)):
-        for col in range(0,len(PIXELS[row])):
-            pixel=PIXELS[row][col]
+    # rgb = wifi_rgb[randint(0,5)]
+    gid = 0#randint(0,1)
+    for row in range(0,len(GHOST_PIXELS[gid])):
+        for col in range(0,len(GHOST_PIXELS[gid][row])):
+            pixel=GHOST_PIXELS[gid][row][col]
             if pixel>0:
+                rgb = GHOST_COLOUR['cry'][pixel]
                 unicornhathd.set_pixel(col, row, rgb[0], rgb[1], rgb[2])
             else:
                 unicornhathd.set_pixel(col, row, 0,0,0)
