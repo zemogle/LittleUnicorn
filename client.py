@@ -58,7 +58,8 @@ def display(sound, lastcry):
     if np.mean(levels) > 0.05:
         cry = True
         # cry_alert(lastcry)
-        show_pixel_image(CRY_GHOST_PIXELS[0], GHOST_COLOUR['cry'])
+        gid = randint(0,len(CRY_GHOST_PIXELS)-1)
+        show_pixel_image(CRY_GHOST_PIXELS[gid], GHOST_COLOUR['cry'])
     else:
         cry = False
         for i in range(1,256):
@@ -146,7 +147,7 @@ def unicorn_display(sound, lastcry):
     else:
         colours = display(sound, lastcry)
     try:
-        unicornhathd.rotation(180.0)
+        unicornhathd.rotation(90.0)
         unicornhathd.show()
     except Exception as e:
         # print(msg.data)
