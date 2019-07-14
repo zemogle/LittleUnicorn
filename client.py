@@ -15,6 +15,8 @@ import numpy as np
 import requests
 import config
 
+from pixels import CRY_GHOST_PIXELS, GHOST_COLOUR, GHOST_PIXELS, PIXELS
+
 
 try:
     import unicornhathd
@@ -26,80 +28,7 @@ except ImportError:
 HOST = '0.0.0.0'
 PORT = 8080
 
-PIXELS   =   [
-        [0,0,1,0,0,0,0,0,1,0,0],
-        [0,0,0,1,0,0,0,1,0,0,0],
-        [0,0,1,1,1,1,1,1,1,0,0],
-        [0,1,1,0,1,1,1,0,1,1,0],
-        [1,1,1,1,1,1,1,1,1,1,1],
-        [1,0,1,1,1,1,1,1,1,0,1],
-        [1,0,1,0,0,0,0,0,1,0,1],
-        [0,0,0,1,1,0,1,1,0,0,0]
-]
 
-GHOST_PIXELS   =   [[
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-        [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,],
-        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,],
-        [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,],
-        [0,0,1,2,2,1,1,1,1,2,2,1,1,1,0,0,],
-        [0,0,2,2,2,2,1,1,2,2,2,2,1,1,0,0,],
-        [0,0,3,3,2,2,1,1,3,3,2,2,1,1,0,0,],
-        [0,1,3,3,2,2,1,1,3,3,2,2,1,1,1,0,],
-        [0,1,1,2,2,1,1,1,1,2,2,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,],
-        [0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-],
-[        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-        [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,],
-        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,],
-        [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,],
-        [0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 0, 0],
-        [0, 0, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 0, 0],
-        [0, 0, 1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 0, 0],
-        [0, 1, 1, 1, 2, 2, 3, 3, 1, 1, 2, 2, 3, 3, 1, 0],
-        [0, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 0],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,],
-        [0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,]
-        ]
-    ]
-
-CRY_GHOST_PIXELS   =   [[
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-        [0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,],
-        [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,],
-        [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,],
-        [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,],
-        [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,],
-        [0,0,1,1,1,2,2,1,1,2,2,1,1,1,0,0,],
-        [0,1,1,1,1,2,2,1,1,2,2,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,2,2,1,1,2,2,1,1,2,2,1,1,0,],
-        [0,1,2,1,1,2,2,1,1,2,2,1,1,2,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,],
-        [0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,0,],
-        [0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,],
-]]
-
-GHOST_COLOUR = {'normal' :{
-                    1: (255,128,0), 2:(255,255,255),3:(0,102,204)
-                    },
-                'cry': {
-                    1: (0,102,204), 2:(255,255,255)
-                    }
-                }
 x = np.arange(1,257)
 calib = np.log(x)
 
@@ -129,11 +58,14 @@ def display(sound, lastcry):
     if np.mean(levels) > 0.05:
         cry = True
         # cry_alert(lastcry)
+        show_pixel_image(CRY_GHOST_PIXELS[0], GHOST_COLOUR['cry'])
     else:
         cry = False
-    for i in range(1,256):
-        val = levels[i]
-        rgb.append(val_to_hsv(10*val, cry))
+        for i in range(1,256):
+            val = levels[i]
+            colour = val_to_hsv(10*val, cry)
+            x,y = divmod(i,16)
+            unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
     return rgb
 
 def histogram_display(sound):
@@ -171,11 +103,11 @@ def val_to_hsv(val, cry):
     elif val < 0.6:
         hsv = (0,0,0)
     elif val >= 0.6 and val <= 0.7:
-        hsv = (0.13, 0.7, 0.7)
+        hsv = (0.13, 0.7, 0.5)
     elif val > 0.7 and val <= 0.8:
-        hsv = (0.07, 0.7, 0.7)
+        hsv = (0.07, 0.7, 0.5)
     elif val > 0.8 and val < 1:
-        hsv = (0.07, 0, 1)
+        hsv = (0.3, 0.7, 0.5)
     else:
         hsv = (val, 0.7, 1)
 
@@ -213,9 +145,6 @@ def unicorn_display(sound, lastcry):
                     unicornhathd.set_pixel_hsv(x, y, 0,0,0)
     else:
         colours = display(sound, lastcry)
-        for i, colour in enumerate(colours):
-            x,y = divmod(i,16)
-            unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
     try:
         unicornhathd.rotation(180.0)
         unicornhathd.show()
@@ -226,17 +155,20 @@ def unicorn_display(sound, lastcry):
 
 def awaiting_connection():
     # rgb = wifi_rgb[randint(0,5)]
-    gid = 0#randint(0,1)
-    for row in range(0,len(GHOST_PIXELS[gid])):
-        for col in range(0,len(GHOST_PIXELS[gid][row])):
-            pixel=GHOST_PIXELS[gid][row][col]
+    show_pixel_image(CRY_GHOST_PIXELS[0], GHOST_COLOUR['cry'])
+    time.sleep(0.1)
+    return
+
+def show_pixel_image(pixels, colours):
+    for row in range(0,len(pixels)):
+        for col in range(0,len(pixels[row])):
+            pixel=pixels[row][col]
             if pixel>0:
-                rgb = GHOST_COLOUR['cry'][pixel]
+                rgb = colours[pixel]
                 unicornhathd.set_pixel(col, row, rgb[0], rgb[1], rgb[2])
             else:
                 unicornhathd.set_pixel(col, row, 0,0,0)
     unicornhathd.show()
-    time.sleep(0.1)
     return
 
 def cry_alert(lastcry):
