@@ -16,6 +16,7 @@ import requests
 import config
 
 from pixels import CRY_GHOST_PIXELS, GHOST_COLOUR, GHOST_PIXELS, PIXELS
+from graphic_eq import calculate_levels
 
 
 try:
@@ -35,7 +36,11 @@ calib = np.log(x)
 if len(sys.argv) > 0:
     HOST = str(sys.argv[1])
     try:
-        DISP = str(sys.argv[2])
+        ROT = int(sys.argv[2])
+    except IndexError:
+        ROT = 90
+    try:
+        DISP = str(sys.argv[3])
     except IndexError:
         DISP = "raw"
 
@@ -68,18 +73,6 @@ def display(sound, lastcry):
             x,y = divmod(i,16)
             unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
     return rgb
-
-def histogram_display(sound):
-    max_val = 16
-    scale = 5
-    x,bins = np.histogram(np.abs((sound['data']*calib)),16,range=(0.,.1))
-    x_arr = []
-    for i in x:
-        xlen = int(i/scale)
-        if xlen > 16:
-            xlen = 16
-        x_arr.append(xlen)
-    return x_arr
 
 def colourise(val, cry):
     if val > 1:
@@ -126,28 +119,27 @@ async def main():
                 # await prompt_and_send(ws)
                 await ws.send_str('')
                 sound = json.loads(msg.data)
-
                 unicorn_display(sound, lastcry)
                 if msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
                     break
 
 def unicorn_display(sound, lastcry):
-    if DISP == 'h':
+    if DISP == 'eq':
+        y_len = calculate_levels(sound)
         unicornhathd.clear()
-        y_len = histogram_display(sound)
 
-        for x in range(0,16):
+        for x in range(0,4):
             y_val = y_len[x]
             for y in range(0,16):
-                if y < y_val:
-                    amp = y_val/np.max(y_len)
+                if y < int(y_val):
+                    amp = y_val/16
                     unicornhathd.set_pixel_hsv(x, y, amp,0.7,0.5)
                 else:
                     unicornhathd.set_pixel_hsv(x, y, 0,0,0)
     else:
         colours = display(sound, lastcry)
     try:
-        unicornhathd.rotation(90.0)
+        unicornhathd.rotation(ROT)
         unicornhathd.show()
     except Exception as e:
         # print(msg.data)
