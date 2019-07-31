@@ -36,9 +36,9 @@ calib = np.log(x)
 if len(sys.argv) > 0:
     HOST = str(sys.argv[1])
     try:
-        ROT = int(sys.argv[2])
+        ROT = float(sys.argv[2])
     except IndexError:
-        ROT = 90
+        ROT = 90.
     try:
         DISP = str(sys.argv[3])
     except IndexError:
@@ -60,7 +60,7 @@ def wait_for_internet_connection():
 def display(sound, lastcry):
     levels = np.abs((sound['data']*calib)) #sound['data']
     rgb = []
-    if np.mean(levels) > 0.05:
+    if np.mean(levels) > 0.07:
         cry = True
         # cry_alert(lastcry)
         gid = randint(0,len(CRY_GHOST_PIXELS)-1)
