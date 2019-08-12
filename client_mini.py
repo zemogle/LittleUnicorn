@@ -107,7 +107,7 @@ async def main():
 def unicorn_display(sound, lastcry):
     y_len = calculate_levels(sound)
     for h in range(height):
-        y_val = y_len[x]
+        y_val = y_len[h]
         for w in range(width):
             if w < int(y_val):
                 amp = colourise(y_val/8*255)
