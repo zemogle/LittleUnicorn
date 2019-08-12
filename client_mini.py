@@ -29,6 +29,9 @@ except ImportError:
 HOST = '0.0.0.0'
 PORT = 8080
 
+unicornhat.set_layout(unicorn.AUTO)
+unicornhat.rotation(0)
+unicornhat.brightness(0.5)
 
 x = np.arange(1,65)
 calib = np.log(x)
