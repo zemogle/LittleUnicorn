@@ -105,6 +105,7 @@ async def main():
                     break
 
 def unicorn_display(sound, lastcry):
+    y_len = calculate_levels(sound)
     for h in range(height):
         y_val = y_len[x]
         for w in range(width):
