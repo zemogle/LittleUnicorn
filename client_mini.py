@@ -32,8 +32,9 @@ PORT = 8080
 unicornhat.set_layout(unicornhat.AUTO)
 unicornhat.rotation(0)
 unicornhat.brightness(0.5)
+width,height=unicorn.get_shape()
 
-x = np.arange(1,65)
+x = np.arange(1,33)
 calib = np.log(x)
 
 if len(sys.argv) > 0:
@@ -77,39 +78,16 @@ def display(sound, lastcry):
             unicornhat.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
     return rgb
 
-def colourise(val, cry):
+def colourise(val, cry=False):
     if val > 1:
         val = 1
     elif val < 0:
         val = 0
     if cry:
-        colour = (val, 0, 0)
+        colour = (int(val), 0, 0)
     else:
-        colour = (0,0,val)
+        colour = (0,0,int(val))
     return colour
-
-def val_to_hsv(val, cry):
-    if cry:
-        hsv = (0.5,0.7,0.7)
-    elif val > 1:
-        val = 1
-        hsv = (1,1,0.5)
-    elif val < 0:
-        val = 0
-        hsv = (0,0,0)
-    elif val < 0.6:
-        hsv = (0,0,0)
-    elif val >= 0.6 and val <= 0.7:
-        hsv = (0.13, 0.7, 0.5)
-    elif val > 0.7 and val <= 0.8:
-        hsv = (0.07, 0.7, 0.5)
-    elif val > 0.8 and val < 1:
-        hsv = (0.3, 0.7, 0.5)
-    else:
-        hsv = (val, 0.7, 1)
-
-    return hsv
-
 
 async def main():
     lastcry = datetime.now()
@@ -127,26 +105,15 @@ async def main():
                     break
 
 def unicorn_display(sound, lastcry):
-    if DISP == 'eq':
-        y_len = calculate_levels(sound)
-        unicornhat.clear()
-
-        for x in range(0,4):
-            y_val = y_len[x]
-            for y in range(0,16):
-                if y < int(y_val):
-                    amp = y_val/16
-                    unicornhat.set_pixel(x, y, int(amp*255),int(amp*255),int(amp*255))
-                else:
-                    unicornhat.set_pixel(x, y, 0,0,0)
-    else:
-        colours = display(sound, lastcry)
-    try:
-        # unicornhathd.rotation(ROT)
-        unicornhat.show()
-    except Exception as e:
-        # print(msg.data)
-        pass
+    for h in range(height):
+        y_val = y_len[x]
+        for w in range(width):
+            if w < int(y_val):
+                amp = colourise(y_val/8*255)
+                unicornhat.set_pixel(h, w, amp,128,0)
+            else:
+                unicornhat.set_pixel(h, w, 0,0,0)
+    unicornhat.show()
     return
 
 def awaiting_connection():
@@ -156,8 +123,8 @@ def awaiting_connection():
     return
 
 def show_pixel_image(pixels, colours):
-    for row in range(0,4):
-        for col in range(0,16):
+    for row in range(height):
+        for col in range(width):
             pixel=pixels[row][col]
             if pixel>0:
                 rgb = colours[pixel]
