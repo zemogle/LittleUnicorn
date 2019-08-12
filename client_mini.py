@@ -20,17 +20,17 @@ from graphic_eq import calculate_levels
 
 
 try:
-    import unicornhathd
+    import unicornhat
     print("unicorn hat hd detected")
 except ImportError:
-    from unicorn_hat_sim import unicornhathd
+    from unicorn_hat_sim import unicornhat
 
 
 HOST = '0.0.0.0'
 PORT = 8080
 
 
-x = np.arange(1,257)
+x = np.arange(1,65)
 calib = np.log(x)
 
 if len(sys.argv) > 0:
@@ -42,7 +42,7 @@ if len(sys.argv) > 0:
     try:
         DISP = str(sys.argv[3])
     except IndexError:
-        DISP = "raw"
+        DISP = "eq"
 
 URL = "ws://{}:{}/ws".format(HOST, PORT)
 TEST_URL = "http://{}:{}".format(HOST, PORT)
@@ -71,7 +71,7 @@ def display(sound, lastcry):
             val = levels[i]
             colour = val_to_hsv(10*val, cry)
             x,y = divmod(i,16)
-            unicornhathd.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
+            unicornhat.set_pixel_hsv(x, y, colour[0], colour[1], colour[2])
     return rgb
 
 def colourise(val, cry):
@@ -126,21 +126,21 @@ async def main():
 def unicorn_display(sound, lastcry):
     if DISP == 'eq':
         y_len = calculate_levels(sound)
-        unicornhathd.clear()
+        unicornhat.clear()
 
         for x in range(0,4):
             y_val = y_len[x]
             for y in range(0,16):
                 if y < int(y_val):
                     amp = y_val/16
-                    unicornhathd.set_pixel_hsv(x, y, amp,0.7,0.5)
+                    unicornhat.set_pixel(x, y, amp*255,amp*255,amp*255)
                 else:
-                    unicornhathd.set_pixel_hsv(x, y, 0,0,0)
+                    unicornhat.set_pixel(x, y, 0,0,0)
     else:
         colours = display(sound, lastcry)
     try:
-        unicornhathd.rotation(ROT)
-        unicornhathd.show()
+        # unicornhathd.rotation(ROT)
+        unicornhat.show()
     except Exception as e:
         # print(msg.data)
         pass
@@ -153,15 +153,15 @@ def awaiting_connection():
     return
 
 def show_pixel_image(pixels, colours):
-    for row in range(0,len(pixels)):
-        for col in range(0,len(pixels[row])):
+    for row in range(0,4):
+        for col in range(0,16):
             pixel=pixels[row][col]
             if pixel>0:
                 rgb = colours[pixel]
-                unicornhathd.set_pixel(col, row, rgb[0], rgb[1], rgb[2])
+                unicornhat.set_pixel(col, row, rgb[0], rgb[1], rgb[2])
             else:
-                unicornhathd.set_pixel(col, row, 0,0,0)
-    unicornhathd.show()
+                unicornhat.set_pixel(col, row, 0,0,0)
+    unicornhat.show()
     return
 
 
@@ -172,4 +172,4 @@ if __name__ == '__main__':
         loop = asyncio.get_event_loop()
         loop.run_until_complete(main())
     except KeyboardInterrupt:
-        unicornhathd.off()
+        unicornhat.off()
