@@ -133,7 +133,7 @@ def unicorn_display(sound, lastcry):
             for y in range(0,16):
                 if y < int(y_val):
                     amp = y_val/16
-                    unicornhat.set_pixel(x, y, amp*255,amp*255,amp*255)
+                    unicornhat.set_pixel(x, y, (amp*255,amp*255,amp*255))
                 else:
                     unicornhat.set_pixel(x, y, 0,0,0)
     else:
