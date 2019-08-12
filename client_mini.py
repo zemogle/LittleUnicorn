@@ -32,7 +32,7 @@ PORT = 8080
 unicornhat.set_layout(unicornhat.AUTO)
 unicornhat.rotation(0)
 unicornhat.brightness(0.5)
-width,height=unicorn.get_shape()
+width,height=unicornhat.get_shape()
 
 x = np.arange(1,33)
 calib = np.log(x)
