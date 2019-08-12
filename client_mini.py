@@ -29,7 +29,7 @@ except ImportError:
 HOST = '0.0.0.0'
 PORT = 8080
 
-unicornhat.set_layout(unicorn.AUTO)
+unicornhat.set_layout(unicornhat.AUTO)
 unicornhat.rotation(0)
 unicornhat.brightness(0.5)
 
@@ -136,7 +136,7 @@ def unicorn_display(sound, lastcry):
             for y in range(0,16):
                 if y < int(y_val):
                     amp = y_val/16
-                    unicornhat.set_pixel(x, y, (amp*255,amp*255,amp*255))
+                    unicornhat.set_pixel(x, y, int(amp*255),int(amp*255),int(amp*255))
                 else:
                     unicornhat.set_pixel(x, y, 0,0,0)
     else:
