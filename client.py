@@ -117,22 +117,6 @@ def val_to_hsv(val, cry):
 
     return hsv
 
-
-async def main():
-    lastcry = datetime.now()
-    session = aiohttp.ClientSession()
-    async with session.ws_connect(URL) as ws:
-        while True:
-            # await prompt_and_send(ws)
-            await ws.send_str('')
-            async for msg in ws:
-                # await prompt_and_send(ws)
-                await ws.send_str('')
-                sound = json.loads(msg.data)
-                unicorn_display(sound, lastcry)
-                if msg.type in (aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
-                    break
-
 def unicorn_display(sound, lastcry):
     if DISP == 'eq':
         y_len = calculate_levels(sound)
@@ -158,7 +142,7 @@ def unicorn_display(sound, lastcry):
 
 def awaiting_connection():
     # rgb = wifi_rgb[randint(0,5)]
-    show_pixel_image(CRY_GHOST_PIXELS[0], GHOST_COLOUR['cry'])
+    show_pixel_image(GHOST_PIXELS[0], GHOST_COLOUR['normal'])
     time.sleep(0.1)
     return
 
