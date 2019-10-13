@@ -166,7 +166,6 @@ def run(ws):
         lastcry = datetime.now()
         sound = json.loads(message)
         unicorn_display(sound, lastcry)
-        time.sleep(0.1)
     return
 
 if __name__ == "__main__":
