@@ -7,6 +7,7 @@ from aiohttp import web, WSMsgType
 import json
 import os
 import struct
+import websocket
 
 
 HOST = os.getenv('HOST', '0.0.0.0')

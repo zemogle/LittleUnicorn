@@ -15,6 +15,14 @@ import numpy as np
 import requests
 import config
 
+from websocket import create_connection
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread
+import time
+
 from pixels import CRY_GHOST_PIXELS, GHOST_COLOUR, GHOST_PIXELS, PIXELS
 from graphic_eq import calculate_levels
 
@@ -54,6 +62,8 @@ def wait_for_internet_connection():
             response = urlopen(TEST_URL,timeout=1)
             break
         except URLError:
+            awaiting_connection()
+        except ConnectionRefusedError:
             awaiting_connection()
     return
 
@@ -165,11 +175,26 @@ def show_pixel_image(pixels, colours):
     return
 
 
-if __name__ == '__main__':
+def run(ws):
+    while True:
+        ws.send(".")
+        message =  ws.recv()
+        lastcry = datetime.now()
+        sound = json.loads(message)
+        unicorn_display(sound, lastcry)
+        time.sleep(0.1)
+    return
 
-    wait_for_internet_connection()
-    try:
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(main())
-    except KeyboardInterrupt:
-        unicornhathd.off()
+if __name__ == "__main__":
+    while True:
+        wait_for_internet_connection()
+
+        try:
+            ws = create_connection(URL)
+            run(ws)
+        except KeyboardInterrupt:
+            unicornhathd.off()
+            ws.close()
+            break
+        except ConnectionResetError:
+            pass
