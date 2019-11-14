@@ -155,6 +155,7 @@ def show_pixel_image(pixels, colours):
                 unicornhathd.set_pixel(col, row, rgb[0], rgb[1], rgb[2])
             else:
                 unicornhathd.set_pixel(col, row, 0,0,0)
+    unicornhathd.rotation(ROT)
     unicornhathd.show()
     return
 
